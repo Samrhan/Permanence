@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
+import {LoginService} from './service/login.service';
 
 @Component({
   selector: 'app-root',
@@ -7,12 +8,18 @@ import {Router} from '@angular/router';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
-  constructor(private router: Router) {
+  constructor(private router: Router, private sLogin: LoginService) {
   }
+
   title = 'Permanence';
 
-  ngOnInit(): void {
-    this.router.navigateByUrl('/login');
+  async ngOnInit(): Promise<void> {
+    const logedin = await this.sLogin.logedin();
+    if (!logedin) {
+      await this.router.navigateByUrl('/login');
+    }else{
+      await this.router.navigateByUrl('/home');
+    }
   }
 
 }

@@ -2,24 +2,27 @@
   <div id="box">
     <h1>Se Connecter</h1>
     <h2>Accès à vos Bases de Données</h2><br>
-    <form [formGroup]="loginForm">
+    <form [formGroup]="loginForm" (submit)="login()">
       <div class="form-group">
-        <label for="inputId">Identifiant</label>
-        <input formControlName="id" type="text" class="form-control {{missingId}}" id="inputId" aria-describedby="bddHelp"
+        <label for="inputUsername">Nom d'utilisateur :</label>
+        <input formControlName="username" type="text" class="form-control" [ngClass]="{'is-invalid' : missingId || passwdErr}" id="inputUsername"
+               aria-describedby="bddHelp"
                placeholder="Identifiant" required>
-        <div class="invalid-feedback">
+        <div class="invalid-feedback" *ngIf="!passwdErr">
          Indiquez votre nom d'utilisateur
         </div>
-        <label for="inputPassword">Mot de Passe</label>
-        <input formControlName="password" class="form-control {{missingPasswd}}" id="inputPassword" placeholder="Mot de Passe"
+        <label for="inputPassword">Mot de Passe :</label>
+        <input formControlName="password" class="form-control" [ngClass]="{'is-invalid' : missingPasswd || passwdErr}" id="inputPassword" placeholder="Mot de Passe"
                type="password" required>
-        <div class="invalid-feedback">
+        <div class="invalid-feedback" *ngIf="!passwdErr">
           Indiquez votre mot de passe
         </div>
-        <small id="passwdErr" class="form-text text-muted" *ngIf="psswdErr">Identifiant ou Mot de Passe incorrect</small>
+        <div class="invalid-feedback"  *ngIf="passwdErr">
+          Identifiant ou Mot de Passe incorrect
+        </div>
         <small id="passwdHelp" class="form-text text-muted">S'il ne s'agit pas de votre ordinateur, utilisez une fenêtre
           de navigation privée pour vous connecter.</small>
-        <button type="submit" class="btn btn-primary" (click)="login()">Se Connecter</button>
+        <button type="submit" class="btn btn-primary">Se Connecter</button>
       </div>
     </form>
   </div>
