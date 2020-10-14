@@ -17,8 +17,10 @@ export class AppComponent implements OnInit {
     const logedin = await this.sLogin.logedin();
     if (!logedin) {
       await this.router.navigateByUrl('/login');
-    }else{
-      await this.router.navigateByUrl('/home');
+    } else {
+      if (this.router.url.split('/')[1] !== 'home') {
+        await this.router.navigateByUrl('/home');
+      }
     }
   }
 

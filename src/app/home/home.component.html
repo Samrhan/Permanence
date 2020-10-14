@@ -1,1 +1,30 @@
-<p>home works!</p>
+<div class="jumbotron text-center" style="margin-bottom:0">
+  <h1>Gestion des Permanences</h1>
+</div>
+
+<nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+  <a class="navbar-brand" href="#">Accueil</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="collapsibleNavbar">
+    <ul class="navbar-nav">
+      <li class="nav-item">
+        <a class="nav-link" routerLink="users">Liste des Magistrats</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">Planning des disponibilités</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">Planning des indisponibilités</a>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+<router-outlet></router-outlet>
+
+<footer class="jumbotron text-center" style="margin-bottom:0">
+  <p>© 2020 - PERMANENCE.XYZ TOUS DROITS RÉSERVÉS</p>
+  <p>Nous n'utilisons aucune données à des fins commerciales</p>
+</footer>

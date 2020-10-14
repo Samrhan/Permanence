@@ -20,9 +20,8 @@ export class LoginService {
       return true;
     } catch (err) {
       if (err.response.status === 403) {
-        throw err;
+        return false;
       }
-      return false;
     }
   }
 
