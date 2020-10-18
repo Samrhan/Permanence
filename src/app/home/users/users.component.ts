@@ -1,16 +1,7 @@
 import {Component, OnInit} from '@angular/core';
-import {BrowserModule} from '@angular/platform-browser';
 
-import {
-  AbstractControl,
-  FormArray,
-  FormBuilder,
-  FormControl,
-  FormGroup,
-  FormGroupDirective,
-  FormsModule,
-  ReactiveFormsModule
-} from '@angular/forms';
+import {FormArray, FormBuilder, FormControl, FormGroup} from '@angular/forms';
+import {UserService} from './service/user.service';
 
 @Component({
   selector: 'app-users',
@@ -21,9 +12,9 @@ export class UsersComponent implements OnInit {
 
   addUserForm: FormGroup;
   days = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi'];
+  persons = [];
 
-
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private sUser: UserService) {
     this.addUserForm = this.fb.group({
       dates: this.fb.array([]),
       name: new FormControl(null),
@@ -36,7 +27,8 @@ export class UsersComponent implements OnInit {
     return this.addUserForm.get('dates') as FormArray;
   }
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
+    this.persons = await this.sUser.fetchPersons();
   }
 
   newDate(): FormGroup {
@@ -58,7 +50,15 @@ export class UsersComponent implements OnInit {
     this.dates().clear();
   }
 
-  onSubmit(): void {
-    console.log(this.addUserForm.value);
+  async onSubmit(): Promise<void> {
+    this.persons.push(await this.sUser.AddPerson(this.addUserForm.value));
+    this.resetDates();
+  }
+
+  async deletePerson(id: number): Promise<void> {
+    const res = await this.sUser.deletePerson(id);
+    if (res) {
+      this.persons.splice(this.persons.indexOf(this.persons.find(p => p.id === id)), 1);
+    }
   }
 }

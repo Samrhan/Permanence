@@ -6,35 +6,47 @@
       <button type="button" class="btn btn-primary" bind-style="{marginBottom:'15px'}" data-toggle="modal"
               data-target="#add-user">Ajouter un Magistrat
       </button>
-      <h3>Recherche</h3>
-      <p>Rechercher un Magistrat</p>
-      <ul class="nav nav-pills flex-column">
-        <input class="form-control mr-sm-2" type="search"
-               placeholder="Rechercher un Article"
-               aria-label="Search">
-      </ul>
       <hr class="d-sm-none">
     </div>
     <div class="col-sm-8">
       <ul class="list-group">
         <div class="accordion" id="liste">
-          <div class="card" *ngFor="let index of [].constructor(10);let i = index">
+          <div class="card" *ngFor="let person of persons;let i = index;">
             <div class="card-header" id="heading{{i}}">
               <h2 class="mb-0">
                 <button class="btn btn-link collapsed" type="button" data-toggle="collapse"
                         attr.data-target="#collapse{{i}}" aria-expanded="true" aria-controls="collapse{{i}}">
-                  Collapsible Group Item #1
+                  {{person.name}} {{person.firstname}}
                 </button>
               </h2>
             </div>
             <div id="collapse{{i}}" class="collapse" aria-labelledby="heading{{i}}" data-parent="#liste">
               <div class="card-body">
-                Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf
-                moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod.
-                Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda
-                shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea
-                proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim
-                aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+                <div bind-style="{marginBottom:'10px'}">
+                  <label for="identity-person">Nom et Prénom</label>
+                  <div class="row" id="identity-person">
+                    <div class="col">
+                      <input type="text" class="form-control" value="{{person.name}}" disabled>
+                    </div>
+                    <div class="col">
+                      <input type="text" class="form-control" value="{{person.firstname}}" disabled>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="select-day-person">Jour d'indisponibilité</label>
+                  <div id="select-day-person">
+                    <input type="text" class="form-control" value="{{days[(person.indisDay) -1]}}" disabled>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="dis-date-person">Dates de disponibilités</label>
+                  <div id="dis-date-person">
+                    <input class="form-control" type="date" disabled
+                           *ngFor="let disDate of person.dates; let j = index" value="{{disDate.date}}">
+                  </div>
+                </div>
+                <button type="button" class="btn btn-danger" (click)="deletePerson(person.id)">Supprimer</button>
               </div>
             </div>
           </div>
@@ -78,20 +90,24 @@
             <div id="dis-date">
               <div class="row" *ngFor="let date of dates().controls; let i = index" [formGroupName]="i">
                 <div class="col mb-3 input-group">
-                  <input class="form-control" type="date" formControlName="date" id="example-date-input" aria-describedby="delete-button-{{i}}">
+                  <input class="form-control" type="date" formControlName="date" id="example-date-input"
+                         aria-describedby="delete-button-{{i}}">
                   <div class="input-group-append">
-                    <button class="btn btn-danger" type="button" id="delete-button-{{i}}" (click)="removeDate(i)">❌</button>
+                    <button class="btn btn-danger" type="button" id="delete-button-{{i}}" (click)="removeDate(i)">❌
+                    </button>
                   </div>
                 </div>
               </div>
-              <button type="button" (click)="addDate()" class="btn btn-primary" bind-style="{marginTop:'15px'}">Ajouter une Date</button>
+              <button type="button" (click)="addDate()" class="btn btn-primary" bind-style="{marginTop:'15px'}">Ajouter
+                une Date
+              </button>
             </div>
           </div>
         </form>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="resetDates()">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="resetDates()">Annuler</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="onSubmit()">Confirmer</button>
       </div>
     </div>
   </div>

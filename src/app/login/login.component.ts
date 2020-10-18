@@ -33,7 +33,6 @@ export class LoginComponent implements OnInit {
 
     if (validForm) {
       const res = await this.sLogin.login({username, passwd});
-      console.log(res);
       this.passwdErr = !res;
     }
 
