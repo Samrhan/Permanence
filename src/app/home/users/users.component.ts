@@ -17,9 +17,11 @@ export class UsersComponent implements OnInit {
   constructor(private fb: FormBuilder, private sUser: UserService) {
     this.addUserForm = this.fb.group({
       dates: this.fb.array([]),
+      disDay: new FormControl(null),
       name: new FormControl(null),
       firstname: new FormControl(null),
-      indisDay: new FormControl(null)
+      indisDay: new FormControl(null),
+      indisDates: this.fb.array([])
     });
   }
 
@@ -45,9 +47,28 @@ export class UsersComponent implements OnInit {
     this.dates().removeAt(i);
   }
 
+  indisDates(): FormArray {
+    return this.addUserForm.get('indisDates') as FormArray;
+  }
+
+  newIndisDate(): FormGroup {
+    return this.fb.group({
+      indisDates: new Date().toLocaleDateString('fr-FR')
+    });
+  }
+
+  addIndisDate(): void {
+    this.indisDates().push(this.newDate());
+  }
+
+  removeIndisDate(i: number): void {
+    this.indisDates().removeAt(i);
+  }
+
   resetDates(): void {
     this.addUserForm.reset();
     this.dates().clear();
+    this.indisDates().clear();
   }
 
   async onSubmit(): Promise<void> {

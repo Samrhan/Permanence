@@ -77,16 +77,49 @@
                 <input type="text" class="form-control" placeholder="Prénom" formControlName="firstname">
               </div>
             </div>
+            <label for="function" bind-style="{marginTop:'15px'}">Fonction particulière</label>
+            <div class="row" id="function">
+              <div class="col">
+                <div class="form-check">
+                  <input type="checkbox" class="form-check-input" id="RP">
+                  <label class="form-check-label" for="RP">Rapporteur Public</label>
+                </div>
+              </div>
+              <div class="col">
+                <div class="form-check">
+                  <input type="checkbox" class="form-check-input" id="TP">
+                  <label class="form-check-label" for="TP">Temps Partiel</label>
+                </div>
+              </div>
+            </div>
+            <small class="form-text text-muted">Ces personnes seront priorisées dans le calcul.</small>
           </div>
           <div class="form-group">
-            <label for="select-day">Séléctionnez le jour d'indisponibilité</label>
-            <select class="custom-select" id="select-day" formControlName="indisDay" required>
+            <label for="select-day">Séléctionnez les jours d'indisponibilités</label>
+            <select class="custom-select" id="select-day" formControlName="indisDay" bind-style="{marginBottom:'15px'}" required>
               <option *ngFor="let day of days; let i = index" value="{{i}}">{{day}}</option>
             </select>
-            <div class="invalid-feedback">Example invalid custom select feedback</div>
+            <div id="indis-date">
+              <div class="row" *ngFor="let date of indisDates().controls; let i = index" [formGroupName]="i">
+                <div class="col mb-3 input-group">
+                  <input class="form-control" type="date" formControlName="indisDates"
+                         aria-describedby="delete-button-{{i}}">
+                  <div class="input-group-append">
+                    <button class="btn btn-danger" type="button" id="indis-delete-button-{{i}}" (click)="removeIndisDate(i)">❌
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <button type="button" (click)="addIndisDate()" class="btn btn-primary">Ajouter
+                une Date
+              </button>
+            </div>
           </div>
           <div class="form-group" formArrayName="dates">
             <label for="dis-date">Dates de disponibilités</label>
+            <select class="custom-select" id="select-indisday" formControlName="disDay" bind-style="{marginBottom:'15px'}" required>
+              <option *ngFor="let day of days; let i = index" value="{{i}}">{{day}}</option>
+            </select>
             <div id="dis-date">
               <div class="row" *ngFor="let date of dates().controls; let i = index" [formGroupName]="i">
                 <div class="col mb-3 input-group">
@@ -98,7 +131,7 @@
                   </div>
                 </div>
               </div>
-              <button type="button" (click)="addDate()" class="btn btn-primary" bind-style="{marginTop:'15px'}">Ajouter
+              <button type="button" (click)="addDate()" class="btn btn-primary">Ajouter
                 une Date
               </button>
             </div>
