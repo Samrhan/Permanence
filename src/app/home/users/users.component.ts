@@ -2,7 +2,6 @@ import {Component, OnInit} from '@angular/core';
 
 import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {UserService} from './service/user.service';
-import {passBoolean} from 'protractor/built/util';
 
 @Component({
   selector: 'app-users',

@@ -105,7 +105,8 @@
           </div>
           <div class="form-group">
             <label for="select-day">Séléctionnez les jours d'indisponibilités</label>
-            <select class="custom-select form-control" id="select-day" formControlName="indisDay" bind-style="{marginBottom:'15px'}" required>
+            <select class="custom-select form-control" id="select-day" formControlName="indisDay"
+                    bind-style="{marginBottom:'15px'}" required>
               <option *ngFor="let day of days; let i = index" value="{{i}}">{{day}}</option>
             </select>
             <div id="indis-date" formArrayName="indisDates">
@@ -114,7 +115,8 @@
                   <input class="form-control" type="date" formControlName="indisDates"
                          aria-describedby="delete-button-{{i}}">
                   <div class="input-group-append">
-                    <button class="btn btn-danger" type="button" id="indis-delete-button-{{i}}" (click)="removeIndisDate(i)">❌
+                    <button class="btn btn-danger" type="button" id="indis-delete-button-{{i}}"
+                            (click)="removeIndisDate(i)">❌
                     </button>
                   </div>
                 </div>
@@ -126,7 +128,8 @@
           </div>
           <div class="form-group">
             <label for="dis-date">Dates de disponibilités</label>
-            <select class="custom-select" id="select-indisday" formControlName="disDay" bind-style="{marginBottom:'15px'}" required>
+            <select class="custom-select" id="select-indisday" formControlName="disDay"
+                    bind-style="{marginBottom:'15px'}" required>
               <option *ngFor="let day of days; let i = index" value="{{i}}">{{day}}</option>
             </select>
             <div id="dis-date" formArrayName="dates">
@@ -147,7 +150,9 @@
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="resetDates()">Annuler</button>
-            <button type="submit" class="btn btn-primary" data-dismiss="modal" [disabled]="!addUserForm.valid">Confirmer</button>
+            <button type="submit" class="btn btn-primary" data-dismiss="modal" [disabled]="!addUserForm.valid">
+              Confirmer
+            </button>
           </div>
         </form>
       </div>

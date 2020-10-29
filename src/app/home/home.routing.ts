@@ -5,10 +5,12 @@ import {MainCalendarComponent} from './main-calendar/main-calendar.component';
 import {UsersComponent} from './users/users.component';
 
 const routes: Routes = [
-  {path: '', component: HomeComponent, children: [
+  {
+    path: '', component: HomeComponent, children: [
       {path: '', component: MainCalendarComponent},
       {path: 'users', component: UsersComponent}
-    ]}
+    ]
+  }
 ];
 
 @NgModule({

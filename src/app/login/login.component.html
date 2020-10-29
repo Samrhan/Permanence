@@ -5,19 +5,21 @@
     <form [formGroup]="loginForm" (submit)="login()">
       <div class="form-group">
         <label for="inputUsername">Nom d'utilisateur :</label>
-        <input formControlName="username" type="text" class="form-control" [ngClass]="{'is-invalid' : missingId || passwdErr}" id="inputUsername"
+        <input formControlName="username" type="text" class="form-control"
+               [ngClass]="{'is-invalid' : missingId || passwdErr}" id="inputUsername"
                aria-describedby="bddHelp"
                placeholder="Identifiant" required>
         <div class="invalid-feedback" *ngIf="!passwdErr">
-         Indiquez votre nom d'utilisateur
+          Indiquez votre nom d'utilisateur
         </div>
         <label for="inputPassword">Mot de Passe :</label>
-        <input formControlName="password" class="form-control" [ngClass]="{'is-invalid' : missingPasswd || passwdErr}" id="inputPassword" placeholder="Mot de Passe"
+        <input formControlName="password" class="form-control" [ngClass]="{'is-invalid' : missingPasswd || passwdErr}"
+               id="inputPassword" placeholder="Mot de Passe"
                type="password" required>
         <div class="invalid-feedback" *ngIf="!passwdErr">
           Indiquez votre mot de passe
         </div>
-        <div class="invalid-feedback"  *ngIf="passwdErr">
+        <div class="invalid-feedback" *ngIf="passwdErr">
           Identifiant ou Mot de Passe incorrect
         </div>
         <small id="passwdHelp" class="form-text text-muted">S'il ne s'agit pas de votre ordinateur, utilisez une fenêtre
