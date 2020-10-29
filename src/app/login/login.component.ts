@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {SHA256} from 'crypto-js';
 import {FormControl, FormGroup} from '@angular/forms';
+import {LoginService} from '../service/login.service';
 
 
 @Component({
@@ -11,14 +11,14 @@ import {FormControl, FormGroup} from '@angular/forms';
 export class LoginComponent implements OnInit {
 
   loginForm = new FormGroup({
-    id: new FormControl(null),
+    username: new FormControl(null),
     password: new FormControl(null)
   });
-  psswdErr = false;
-  missingPasswd = '';
-  missingId = '';
+  passwdErr = false;
+  missingPasswd = false;
+  missingId = false;
 
-  constructor() {
+  constructor(private sLogin: LoginService) {
   }
 
   ngOnInit(): void {
@@ -26,36 +26,16 @@ export class LoginComponent implements OnInit {
 
   async login(): Promise<void> {
     const passwd = this.loginForm.controls.password.value;
-    const id = this.loginForm.controls.id.value;
-    if (passwd && id) {
-      this.missingId = '';
-      this.missingPasswd = '';
-      const hash = new SHA256(passwd).toString();
-      await fetch(`http://permanence.xyz:4001/api/login/${id}`, {
-          method: 'POST',
-          headers: {
-            passwd: hash
-          }
-        }
-      ).then(res => res.json()).then(json => {
-        console.log(json);
-        if (json.state === 'failed') {
-          this.psswdErr = true;
-          this.loginForm.controls.password.setValue('');
-        }
-      });
-    } else {
-      if (!passwd) {
-        this.missingPasswd = 'is-invalid';
-      }else{
-        this.missingPasswd = '';
-      }
-      if (!id) {
-        this.missingId = 'is-invalid';
-      }else{
-        this.missingId = '';
-      }
+    const username = this.loginForm.controls.username.value;
+    this.missingPasswd = !passwd;
+    this.missingId = !username;
+    const validForm = !this.missingPasswd && !this.missingId;
+
+    if (validForm) {
+      const res = await this.sLogin.login({username, passwd});
+      this.passwdErr = !res;
     }
+
   }
 
 }

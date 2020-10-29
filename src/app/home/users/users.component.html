@@ -1,0 +1,161 @@
+<div class="container" style="margin-top:30px">
+  <div class="row">
+    <div class="col-sm-4">
+      <h2>Liste des Magistrats</h2>
+      <p>Vous trouverez ici la liste des Magistrats, avec la possiblité d'éditer leurs disponnibilitées</p>
+      <button type="button" class="btn btn-primary" bind-style="{marginBottom:'15px'}" data-toggle="modal"
+              data-target="#add-user">Ajouter un Magistrat
+      </button>
+      <hr class="d-sm-none">
+    </div>
+    <div class="col-sm-8">
+      <ul class="list-group">
+        <div class="accordion" id="liste">
+          <div class="card" *ngFor="let person of persons;let i = index;">
+            <div class="card-header" id="heading{{i}}">
+              <h2 class="mb-0">
+                <button class="btn btn-link collapsed" type="button" data-toggle="collapse"
+                        attr.data-target="#collapse{{i}}" aria-expanded="true" aria-controls="collapse{{i}}">
+                  {{person.name}} {{person.firstname}}
+                  <small class="text-muted" *ngIf="person.rp">Rapporteur Public</small>
+                  <small class="text-muted" *ngIf="person.partial">Temps Partiel</small>
+                </button>
+              </h2>
+            </div>
+            <div id="collapse{{i}}" class="collapse" aria-labelledby="heading{{i}}" data-parent="#liste">
+              <div class="card-body">
+                <div bind-style="{marginBottom:'10px'}">
+                  <label for="identity-person">Nom et Prénom</label>
+                  <div class="row" id="identity-person">
+                    <div class="col">
+                      <input type="text" class="form-control" value="{{person.name}}" disabled>
+                    </div>
+                    <div class="col">
+                      <input type="text" class="form-control" value="{{person.firstname}}" disabled>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="select-day-person">Dates d'indisponibilités</label>
+                  <div id="select-day-person">
+                    <input type="text" class="form-control" value="{{days[(person.indisDay) -1]}}" disabled>
+                  </div>
+                  <div id="indis-date-person">
+                    <input class="form-control" type="date" disabled
+                           *ngFor="let indisDate of person.indisDates; let k = index" value="{{indisDate.indisDates}}">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="select-disday-person">Dates de disponibilités</label>
+                  <div id="select-disday-person">
+                    <input type="text" class="form-control" value="{{days[(person.disDay) -1]}}" disabled>
+                  </div>
+                  <div id="dis-date-person">
+                    <input class="form-control" type="date" disabled
+                           *ngFor="let disDate of person.dates; let j = index" value="{{disDate.date}}">
+                  </div>
+                </div>
+                <button type="button" class="btn btn-danger" (click)="deletePerson(person.id)">Supprimer</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="add-user" tabindex="-1" role="dialog" aria-labelledby="add-user" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Ajouter un Magistrat</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="addUserForm" (ngSubmit)="onSubmit()">
+          <div id="form-group" bind-style="{marginBottom:'10px'}">
+            <label for="identity">Nom et Prénom</label>
+            <div class="row" id="identity">
+              <div class="col">
+                <input type="text" class="form-control" placeholder="Nom" formControlName="name" required>
+              </div>
+              <div class="col">
+                <input type="text" class="form-control" placeholder="Prénom" formControlName="firstname" required>
+              </div>
+            </div>
+            <label for="function" bind-style="{marginTop:'15px'}">Fonction particulière</label>
+            <div class="row" id="function">
+              <div class="col">
+                <div class="form-check">
+                  <input type="checkbox" class="form-check-input" id="RP" formControlName="rp">
+                  <label class="form-check-label" for="RP">Rapporteur Public</label>
+                </div>
+              </div>
+              <div class="col">
+                <div class="form-check">
+                  <input type="checkbox" class="form-check-input" id="TP" formControlName="partial">
+                  <label class="form-check-label" for="TP">Temps Partiel</label>
+                </div>
+              </div>
+            </div>
+            <small class="form-text text-muted">Ces personnes seront priorisées dans le calcul.</small>
+          </div>
+          <div class="form-group">
+            <label for="select-day">Séléctionnez les jours d'indisponibilités</label>
+            <select class="custom-select form-control" id="select-day" formControlName="indisDay"
+                    bind-style="{marginBottom:'15px'}" required>
+              <option *ngFor="let day of days; let i = index" value="{{i}}">{{day}}</option>
+            </select>
+            <div id="indis-date" formArrayName="indisDates">
+              <div class="row" *ngFor="let date of indisDates().controls; let i = index" [formGroupName]="i">
+                <div class="col mb-3 input-group">
+                  <input class="form-control" type="date" formControlName="indisDates"
+                         aria-describedby="delete-button-{{i}}">
+                  <div class="input-group-append">
+                    <button class="btn btn-danger" type="button" id="indis-delete-button-{{i}}"
+                            (click)="removeIndisDate(i)">❌
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <button type="button" (click)="addIndisDate()" class="btn btn-primary">Ajouter
+                une Date
+              </button>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="dis-date">Dates de disponibilités</label>
+            <select class="custom-select" id="select-indisday" formControlName="disDay"
+                    bind-style="{marginBottom:'15px'}" required>
+              <option *ngFor="let day of days; let i = index" value="{{i}}">{{day}}</option>
+            </select>
+            <div id="dis-date" formArrayName="dates">
+              <div class="row" *ngFor="let date of dates().controls; let i = index" [formGroupName]="i">
+                <div class="col mb-3 input-group">
+                  <input class="form-control" type="date" formControlName="date" id="example-date-input"
+                         aria-describedby="delete-button-{{i}}">
+                  <div class="input-group-append">
+                    <button class="btn btn-danger" type="button" id="delete-button-{{i}}" (click)="removeDate(i)">❌
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <button type="button" (click)="addDate()" class="btn btn-primary">Ajouter
+                une Date
+              </button>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="resetDates()">Annuler</button>
+            <button type="submit" class="btn btn-primary" data-dismiss="modal" [disabled]="!addUserForm.valid">
+              Confirmer
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

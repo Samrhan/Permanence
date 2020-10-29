@@ -1,0 +1,28 @@
+<div class="container" style="margin-top:30px">
+  <div class="row">
+    <div class="col-sm-4">
+      <h2>Planning des Permanences</h2>
+      <p>Vous trouverez ici le planning des permanences, que vous pouvez exporter dans un fichier Excel</p>
+      <h3>Format</h3>
+      <p>Changez le format du calendrier</p>
+      <ul class="nav nav-pills flex-column">
+        <li class="nav-item">
+          <a class="nav-link" [ngClass]="{'active' : view === 'Month' || !view}" (click)="changeView('Month')">Mois</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" [ngClass]="{'active' : view === 'Week'}" (click)="changeView('Week')">Semaine</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" [ngClass]="{'active' : view === 'Day'}" (click)="changeView('Day')">Aujourd'hui</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link disabled" href="">Exporter en CSV</a>
+        </li>
+      </ul>
+      <hr class="d-sm-none">
+    </div>
+    <div class="col-sm-8">
+      <full-calendar #calendar [options]="calendarOptions"></full-calendar>
+    </div>
+  </div>
+</div>
