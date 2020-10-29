@@ -1,7 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 
-import {FormArray, FormBuilder, FormControl, FormGroup} from '@angular/forms';
+import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {UserService} from './service/user.service';
+import {passBoolean} from 'protractor/built/util';
 
 @Component({
   selector: 'app-users',
@@ -17,11 +18,13 @@ export class UsersComponent implements OnInit {
   constructor(private fb: FormBuilder, private sUser: UserService) {
     this.addUserForm = this.fb.group({
       dates: this.fb.array([]),
-      disDay: new FormControl(null),
-      name: new FormControl(null),
-      firstname: new FormControl(null),
-      indisDay: new FormControl(null),
-      indisDates: this.fb.array([])
+      name: new FormControl(null, [Validators.required, Validators.minLength(1)]),
+      firstname: new FormControl(null, [Validators.required, Validators.minLength(1)]),
+      indisDay: new FormControl(null, [Validators.required, Validators.minLength(1)]),
+      disDay: new FormControl(null, [Validators.required, Validators.minLength(1)]),
+      indisDates: this.fb.array([]),
+      rp: new FormControl(false),
+      partial: new FormControl(false)
     });
   }
 
@@ -31,6 +34,7 @@ export class UsersComponent implements OnInit {
 
   async ngOnInit(): Promise<void> {
     this.persons = await this.sUser.fetchPersons();
+    console.log(this.persons);
   }
 
   newDate(): FormGroup {
@@ -58,7 +62,7 @@ export class UsersComponent implements OnInit {
   }
 
   addIndisDate(): void {
-    this.indisDates().push(this.newDate());
+    this.indisDates().push(this.newIndisDate());
   }
 
   removeIndisDate(i: number): void {

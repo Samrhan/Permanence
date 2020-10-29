@@ -17,6 +17,8 @@
                 <button class="btn btn-link collapsed" type="button" data-toggle="collapse"
                         attr.data-target="#collapse{{i}}" aria-expanded="true" aria-controls="collapse{{i}}">
                   {{person.name}} {{person.firstname}}
+                  <small class="text-muted" *ngIf="person.rp">Rapporteur Public</small>
+                  <small class="text-muted" *ngIf="person.partial">Temps Partiel</small>
                 </button>
               </h2>
             </div>
@@ -34,13 +36,20 @@
                   </div>
                 </div>
                 <div class="form-group">
-                  <label for="select-day-person">Jour d'indisponibilité</label>
+                  <label for="select-day-person">Dates d'indisponibilités</label>
                   <div id="select-day-person">
                     <input type="text" class="form-control" value="{{days[(person.indisDay) -1]}}" disabled>
                   </div>
+                  <div id="indis-date-person">
+                    <input class="form-control" type="date" disabled
+                           *ngFor="let indisDate of person.indisDates; let k = index" value="{{indisDate.indisDates}}">
+                  </div>
                 </div>
                 <div class="form-group">
-                  <label for="dis-date-person">Dates de disponibilités</label>
+                  <label for="select-disday-person">Dates de disponibilités</label>
+                  <div id="select-disday-person">
+                    <input type="text" class="form-control" value="{{days[(person.disDay) -1]}}" disabled>
+                  </div>
                   <div id="dis-date-person">
                     <input class="form-control" type="date" disabled
                            *ngFor="let disDate of person.dates; let j = index" value="{{disDate.date}}">
@@ -71,23 +80,23 @@
             <label for="identity">Nom et Prénom</label>
             <div class="row" id="identity">
               <div class="col">
-                <input type="text" class="form-control" placeholder="Nom" formControlName="name">
+                <input type="text" class="form-control" placeholder="Nom" formControlName="name" required>
               </div>
               <div class="col">
-                <input type="text" class="form-control" placeholder="Prénom" formControlName="firstname">
+                <input type="text" class="form-control" placeholder="Prénom" formControlName="firstname" required>
               </div>
             </div>
             <label for="function" bind-style="{marginTop:'15px'}">Fonction particulière</label>
             <div class="row" id="function">
               <div class="col">
                 <div class="form-check">
-                  <input type="checkbox" class="form-check-input" id="RP">
+                  <input type="checkbox" class="form-check-input" id="RP" formControlName="rp">
                   <label class="form-check-label" for="RP">Rapporteur Public</label>
                 </div>
               </div>
               <div class="col">
                 <div class="form-check">
-                  <input type="checkbox" class="form-check-input" id="TP">
+                  <input type="checkbox" class="form-check-input" id="TP" formControlName="partial">
                   <label class="form-check-label" for="TP">Temps Partiel</label>
                 </div>
               </div>
@@ -96,10 +105,10 @@
           </div>
           <div class="form-group">
             <label for="select-day">Séléctionnez les jours d'indisponibilités</label>
-            <select class="custom-select" id="select-day" formControlName="indisDay" bind-style="{marginBottom:'15px'}" required>
+            <select class="custom-select form-control" id="select-day" formControlName="indisDay" bind-style="{marginBottom:'15px'}" required>
               <option *ngFor="let day of days; let i = index" value="{{i}}">{{day}}</option>
             </select>
-            <div id="indis-date">
+            <div id="indis-date" formArrayName="indisDates">
               <div class="row" *ngFor="let date of indisDates().controls; let i = index" [formGroupName]="i">
                 <div class="col mb-3 input-group">
                   <input class="form-control" type="date" formControlName="indisDates"
@@ -115,12 +124,12 @@
               </button>
             </div>
           </div>
-          <div class="form-group" formArrayName="dates">
+          <div class="form-group">
             <label for="dis-date">Dates de disponibilités</label>
             <select class="custom-select" id="select-indisday" formControlName="disDay" bind-style="{marginBottom:'15px'}" required>
               <option *ngFor="let day of days; let i = index" value="{{i}}">{{day}}</option>
             </select>
-            <div id="dis-date">
+            <div id="dis-date" formArrayName="dates">
               <div class="row" *ngFor="let date of dates().controls; let i = index" [formGroupName]="i">
                 <div class="col mb-3 input-group">
                   <input class="form-control" type="date" formControlName="date" id="example-date-input"
@@ -136,11 +145,11 @@
               </button>
             </div>
           </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="resetDates()">Annuler</button>
+            <button type="submit" class="btn btn-primary" data-dismiss="modal" [disabled]="!addUserForm.valid">Confirmer</button>
+          </div>
         </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="resetDates()">Annuler</button>
-        <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="onSubmit()">Confirmer</button>
       </div>
     </div>
   </div>
