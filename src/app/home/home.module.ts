@@ -3,13 +3,15 @@ import {CommonModule} from '@angular/common';
 import {HomeComponent} from './home.component';
 import {HomeRoutingModule} from './home.routing';
 import {UsersComponent} from './users/users.component';
-import {ReactiveFormsModule} from '@angular/forms'; // a plugin
+import {ReactiveFormsModule} from '@angular/forms';
+import {PeriodeComponent} from './periode/periode.component';
 
 
 @NgModule({
   declarations: [
     HomeComponent,
-    UsersComponent
+    UsersComponent,
+    PeriodeComponent
   ],
   imports: [
     CommonModule,

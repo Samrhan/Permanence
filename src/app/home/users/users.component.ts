@@ -1,7 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 
 import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
-import {UserService} from './service/user.service';
+import {UserService} from '../service/user.service';
+import * as moment from 'moment';
+import {Moment} from 'moment';
 
 @Component({
   selector: 'app-users',
@@ -17,10 +19,11 @@ export class UsersComponent implements OnInit {
   constructor(private fb: FormBuilder, private sUser: UserService) {
     this.addUserForm = this.fb.group({
       dates: this.fb.array([]),
-      name: new FormControl(null, [Validators.required, Validators.minLength(1)]),
+      lastname: new FormControl(null, [Validators.required, Validators.minLength(1)]),
       firstname: new FormControl(null, [Validators.required, Validators.minLength(1)]),
       indisDay: new FormControl(null, [Validators.required, Validators.minLength(1)]),
-      disDay: new FormControl(null, [Validators.required, Validators.minLength(1)]),
+      p_indis: new FormControl(-1),
+      disDay: new FormControl(-1),
       indisDates: this.fb.array([]),
       rp: new FormControl(false),
       partial: new FormControl(false)
@@ -32,13 +35,13 @@ export class UsersComponent implements OnInit {
   }
 
   async ngOnInit(): Promise<void> {
-    this.persons = await this.sUser.fetchPersons();
-    console.log(this.persons);
+    const data = await this.sUser.fetchPersons();
+    this.persons = data.people;
   }
 
   newDate(): FormGroup {
     return this.fb.group({
-      date: new Date().toLocaleDateString('fr-FR')
+      date: ''
     });
   }
 
@@ -56,7 +59,7 @@ export class UsersComponent implements OnInit {
 
   newIndisDate(): FormGroup {
     return this.fb.group({
-      indisDates: new Date().toLocaleDateString('fr-FR')
+      indisDates: ''
     });
   }
 
@@ -84,5 +87,9 @@ export class UsersComponent implements OnInit {
     if (res) {
       this.persons.splice(this.persons.indexOf(this.persons.find(p => p.id === id)), 1);
     }
+  }
+
+  dateFormat(date: Date): string {
+    return moment(date).format('DD/MM/YYYY');
   }
 }

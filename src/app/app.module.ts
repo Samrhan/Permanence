@@ -5,6 +5,7 @@ import {LoginComponent} from './login/login.component';
 import {appRoutingModule} from './app.routing';
 import {ReactiveFormsModule} from '@angular/forms';
 import {MainCalendarComponent} from './home/main-calendar/main-calendar.component';
+import {DisponibilitiesCalendarComponent} from './home/disponibilities-calendar/disponibilities-calendar.component'; // a plugin
 import {FullCalendarModule} from '@fullcalendar/angular';
 import dayGridPlugin from '@fullcalendar/daygrid'; // a plugin
 import interactionPlugin from '@fullcalendar/interaction';
@@ -19,14 +20,13 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
   declarations: [
     AppComponent,
     LoginComponent,
-    MainCalendarComponent
-  ],
+    MainCalendarComponent,
+    DisponibilitiesCalendarComponent],
   imports: [
     BrowserModule,
     appRoutingModule,
     ReactiveFormsModule,
-    FullCalendarModule
-  ],
+    FullCalendarModule],
   providers: [],
   bootstrap: [AppComponent]
 })
