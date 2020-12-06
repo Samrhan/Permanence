@@ -1,0 +1,6 @@
+#periode{
+  display: flex;
+  flex-direction: row;
+  min-width: 10rem;
+  margin-left: 10px;
+}
